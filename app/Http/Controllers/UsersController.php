@@ -6,8 +6,16 @@ use Illuminate\Http\Request;
 
 class UsersController extends Controller
 {
-    public function profile()
+    public function profile(\App\UserService $userService)
     {
-        return "Hiển thị profile của user đăng nhập!";
+        $email = isset($_GET['email']) ? $_GET['email'] : null;
+        $password = isset($_GET['password']) ? $_GET['password'] : null;
+
+        $loggedInUser = $userService->getLoggedInUser($email, $password);
+
+        if ($loggedInUser) {
+            return "Chào " . $loggedInUser->name . "!";
+        }
+        return "Email hoặc pass không hợp lệ!";
     }
 }
